@@ -1,3 +1,4 @@
+const crypto = require("crypto");
 const redis = require("p-redis");
 const cookie = require("cookie");
 const uid = require("uid-safe");
@@ -22,7 +23,10 @@ function session(options = {}) {
 				});
 			}
 		}).then(() => {
-			key = "session:" + (options.app || "app") + ":" + req.cookies.session;
+			const hash = crypto.createHash("sha256");
+			hash.update(req.cookies.session);
+
+			key = "session:" + (options.app || "app") + ":" + hash.digest("base64");
 
 			return db.existsAsync(key).then(exists => {
 				if(exists) {
