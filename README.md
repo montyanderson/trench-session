@@ -1,6 +1,6 @@
 # trench-session
 
-Session middleware for [Trench](https://github.com/montyanderson/trench), using Redis.
+:date: Session middleware for [Trench](https://github.com/montyanderson/trench), using Redis.
 
 ## Usage
 
