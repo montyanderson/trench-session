@@ -4,6 +4,12 @@ const cookie = require("cookie");
 const uid = require("uid-safe");
 
 function session(options = {}) {
+	const defaults = {
+		expire: 60 * 60 * 24 // one day
+	};
+
+	options = Object.assign({}, defaults, options);
+
 	const db = options.client || redis.createClient(options.db);
 
 	return (req, res) => {
@@ -42,7 +48,11 @@ function session(options = {}) {
 			const _end = res.end;
 
 			res.end = function() {
-				db.setAsync(key, JSON.stringify(req.session));
+				db.multi()
+					.set(key, JSON.stringify(req.session))
+					.expire(key, options.expire)
+					.execAsync();
+
 				_end.apply(this, arguments);
 			}
 		});

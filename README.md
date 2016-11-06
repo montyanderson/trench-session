@@ -38,6 +38,12 @@ Type: `string`
 
 A name for the application, used so you can store multiple app's sessions in the same redis database, without possibility of interference.
 
+##### expire
+
+Type: `number`
+
+Amount of seconds until the session expires, since last saved.
+
 ##### db
 
 Type: `string`, `object`
